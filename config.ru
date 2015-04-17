@@ -1,3 +1,5 @@
+$:<<'lib'
+
 require 'perspectives_notary'
 
 class NotaryApp
