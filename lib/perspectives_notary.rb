@@ -12,3 +12,4 @@ end
 require 'perspectives_notary/xml_builder'
 require 'perspectives_notary/openssl_scanner'
 require 'perspectives_notary/observation'
+require 'perspectives_notary/observe_job'

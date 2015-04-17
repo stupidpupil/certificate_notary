@@ -16,7 +16,7 @@ class NotaryApp
 
     service = "#{host}:#{port},#{service_type}"
 
-    PerspectivesNotary::Observation.observe_fingerprint(service, PerspectivesNotary::OpenSSLScanner.fingerprint(host, port)) if PerspectivesNotary::Observation.observation_needed_for? service
+    PerspectivesNotary::ObserveJob.new.async.perform(host, port, service_type)
 
     return [404, {"Content-Type" => "text/plain"}, [""]] if PerspectivesNotary::DB[:observations].where(service:service).none?
 
