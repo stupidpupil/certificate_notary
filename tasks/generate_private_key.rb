@@ -1,5 +1,5 @@
 require 'openssl'
-require 'Base64'
+require 'base64'
 
 task 'generate_private_key' do
   key_length = 1369
