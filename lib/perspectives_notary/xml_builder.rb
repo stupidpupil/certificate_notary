@@ -5,7 +5,7 @@ module PerspectivesNotary
       xml = ""
       packed_data = ""
 
-      observations = DB[:observations].where(service:service).all
+      observations = Observation.where(service:service).all
 
       observations.group_by{|k| k[:fingerprint]}.each_pair do |fp, timestamps|
 

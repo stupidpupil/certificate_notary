@@ -7,7 +7,7 @@ describe PerspectivesNotary::XMLBuilder do
   end
 
   it 'produces valid XML' do
-    puts PerspectivesNotary::XMLBuilder.xml_for_service('www.google.com:443,2')
+    #puts PerspectivesNotary::XMLBuilder.xml_for_service('www.google.com:443,2')
   end
 
 

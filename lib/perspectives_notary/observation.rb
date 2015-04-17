@@ -1,20 +1,20 @@
 module PerspectivesNotary
-  class Observation < Sequel::Model
+  class Observation < Sequel::Model(DB[:observations].order(Sequel.asc(:end)))
 
     def self.observe_fingerprint(service, fingerprint)
-      fp = DB[:observations].where(service: service, fingerprint:fingerprint).order(Sequel.desc(:end)).first
+      most_recent_obs = Observation.where(service: service).last
 
-      if fp.nil? or (Time.now - fp[:end]) > Config.observation_update_limit
-        DB[:observations].insert(service: service, fingerprint: fingerprint, start:Time.now, end:Time.now)
+      if most_recent_obs.nil? or most_recent_obs.fingerprint != fingerprint or (Time.now - most_recent_obs[:end]) > Config.observation_update_limit
+        return Observation.create(service:service, fingerprint:fingerprint, start:Time.now, end:Time.now)
       else
-        DB[:observations].where(id:fp[:id]).update(end:Time.now)
+        most_recent_obs.update(end:Time.now)
       end
 
     end
 
     def self.observation_needed_for?(service)
-      return true if DB[:observations].where(service:service).none?
-      return true if DB[:observations].where(service:service).all.max {|o| o[:end]}[:end] < (Time.now - Config.observation_cool_off) 
+      return true if Observation.where(service:service).none?
+      return true if Observation.where(service:service).all.max {|o| o[:end]}[:end] < (Time.now - Config.observation_cool_off) 
       return false
     end
 
