@@ -1,0 +1,1 @@
+require 'perspectives_notary'
