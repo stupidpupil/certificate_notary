@@ -16,9 +16,11 @@ class NotaryApp
     return [200, {"Content-Type" => 'text/plain'}, [PerspectivesNotary::Config.private_key.public_key.to_pem]] if req.path == '/public-key'
 
     host = req.params['host']
-    raise "No host given!" unless host
     port = req.params['port'] || '443'
     service_type = req.params['service_type'] || '2'
+
+    return [501, {"Content-Type" => 'text/plain'}, ['Unknown service type']] if service_type != '2'
+    return [400, {"Content-Type" => 'text/plain'}, ['Bad request']] if (req.params.keys | ['host', 'port', 'service_type']) != ['host', 'port', 'service_type']
 
     service = nil
     PerspectivesNotary::DB.transaction do
