@@ -15,7 +15,7 @@ module PerspectivesNotary
         # Packed Data
         #
 
-        head = [(timestamps.count >> 8) & 255, timestamps.count & 255, 0, 16, 3].pack('C'*5) #HEAD
+        head = [(timestamps.count >> 8) & 255, timestamps.count & 255, 0, 16, 3].pack('C'*5)
         fp_bytes = fp.split(':').map {|h| [h.hex].pack('C')}.join
         
         ts_bytes = ""
