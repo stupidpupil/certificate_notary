@@ -8,7 +8,10 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  db: 'sqlite::memory:'
+  db: 'sqlite://tmp/sqlite.db'
+  observation_cool_off: 5
+  auto_reobserve_interval: 20
+  auto_reobserve_count: 3
 
 testing:
   <<: *defaults
