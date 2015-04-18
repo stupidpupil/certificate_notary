@@ -1,16 +1,20 @@
 defaults: &defaults
   sni: <%= ENV['NOTARY_SNI'] || true %>
   private_key_encoded: <%= ENV['NOTARY_PRIVATE_KEY'] %>
-  observation_update_limit: <%= ENV['NOTARY_OBS_UPDATE_LIMIT'] || 60*60*48 %> # Create a new observation after 2 days
-  observation_cool_off: <%= ENV['NOTARY_OBS_COOL_OFF'] || 60*45 %> # 45 minutes
-  auto_reobserve_interval: <%= ENV['NOTARY_AUTO_REOBS_INTERVAL'] || 60*60*12 %> #6 hours
-  auto_reobserve_limit: <%= ENV['NOTARY_AUTO_REOBS_LIMIT'] || 60*60*24*5 %> #5 days
+  observation_update_limit: <%= ENV['NOTARY_OBS_UPDATE_LIMIT'] || 60*60*48 %> # Create a new observation after 2 days gap
+  observation_cool_off: <%= ENV['NOTARY_OBS_COOL_OFF'] || 60*45 %> # 45 minutes - don't check a service more often than this
+
+  auto_reobs:
+    interval: <%= ENV['NOTARY_AUTO_REOBS_INTERVAL'] || 60*60*12 %> #Scan a service every ~12 hours
+    limit: <%= ENV['NOTARY_AUTO_REOBS_LIMIT'] || 60*60*24*5 %> #for up to 5 days after the last request
+    period: <%= ENV['NOTARY_AUTO_REOBS_PERIOD'] || 60*5 %> #Run the check-and-reobs job every 5 minutes
 
 development:
   <<: *defaults
   db: 'sqlite://tmp/sqlite.db'
   observation_cool_off: 5
   auto_reobserve_interval: 20
+  auto_reobserve_limit: <%= 5*60 %>
 
 testing:
   <<: *defaults

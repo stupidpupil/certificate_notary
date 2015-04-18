@@ -3,6 +3,12 @@ $:<<'lib'
 require 'perspectives_notary'
 
 class NotaryApp
+
+  def initialize
+    super
+    PerspectivesNotary::CheckAndReobserveJob.new.perform
+  end
+
   def call(env)
 
     req = Rack::Request.new(env)
@@ -27,5 +33,6 @@ class NotaryApp
     [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service)]]
   end
 end
+
 
 run NotaryApp.new
