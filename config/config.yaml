@@ -14,9 +14,9 @@ development:
   db: 'sqlite://tmp/sqlite.db'
   observation_cool_off: 5
   auto_reobs:
-    interval: 20
-    limit: 60
-    period: 5
+    interval: 120
+    limit: 360
+    period: 10
 
 testing:
   <<: *defaults
