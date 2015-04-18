@@ -1,5 +1,6 @@
 module PerspectivesNotary
   class Observation < Sequel::Model(DB[:observations].order(Sequel.asc(:end)))
+    many_to_one :service
 
     def self.observe_fingerprint(service, fingerprint)
       most_recent_obs = Observation.where(service: service).last

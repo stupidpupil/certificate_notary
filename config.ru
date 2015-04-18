@@ -14,9 +14,10 @@ class NotaryApp
     port = req.params['port'] || 443
     service_type = req.params['service_type'] || 2
 
-    service = "#{host}:#{port},#{service_type}"
+    service = PerspectivesNotary::Service.find_or_create(host:host, port:port, service_type:service_type)
+    service.update(last_request:Time.now)
 
-    PerspectivesNotary::ObserveJob.new.async.perform(host, port, service_type)
+    PerspectivesNotary::ObserveJob.new.async.perform(service)
 
     return [404, {"Content-Type" => "text/plain"}, [""]] if PerspectivesNotary::Observation.where(service:service).none?
 

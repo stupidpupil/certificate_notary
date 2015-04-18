@@ -4,18 +4,16 @@ module PerspectivesNotary
   class ObserveJob
     include SuckerPunch::Job
 
-    def perform(host, port, service_type, auto_count = 0)
+    def perform(service, auto_count = 0)
 
-      service = "#{host}:#{port},#{service_type}"
-
-      puts "ObserveJob #{service} #{auto_count}"
+      puts "ObserveJob #{service.id_string} #{auto_count}"
 
       return if not PerspectivesNotary::Observation.observation_needed_for? service
       
-      fingerprint = PerspectivesNotary::OpenSSLScanner.fingerprint(host, port)
+      fingerprint = PerspectivesNotary::OpenSSLScanner.fingerprint(service.host, service.port)
       PerspectivesNotary::Observation.observe_fingerprint(service, fingerprint)
 
-      after(Config.auto_reobserve_interval) {ObserveJob.new.perform(host,port,service_type, auto_count + 1)} if auto_count < Config.auto_reobserve_count
+      #after(Config.auto_reobserve_interval) {ObserveJob.new.perform(service, auto_count + 1)} if auto_count < Config.auto_reobserve_count
     end
 
   end

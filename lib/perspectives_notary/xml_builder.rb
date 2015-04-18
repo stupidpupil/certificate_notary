@@ -35,7 +35,7 @@ module PerspectivesNotary
 
       end
 
-      packed_data = service + [0].pack('C') + packed_data
+      packed_data = service.id_string + [0].pack('C') + packed_data
       signature =  Base64.strict_encode64(Config.private_key.sign(OpenSSL::Digest::MD5.new, packed_data))
 
       return "<notary_reply sig=\"#{signature}\" sig_type=\"rsa-md5\" version=\"1\">#{xml}</notary_reply>"
