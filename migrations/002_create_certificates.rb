@@ -5,8 +5,8 @@ Sequel.migration do
 
       File :der_encoded
 
-      String :md5, length:32, fixed:true
-      String :sha256, length:64, fixed:true, index:true
+      String :md5, size:32, fixed:true
+      String :sha256, size:64, fixed:true, index:true
 
     end
   end
