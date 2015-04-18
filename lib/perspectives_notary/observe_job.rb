@@ -6,8 +6,11 @@ module PerspectivesNotary
 
     def perform(service, auto_count = 0)
 
-      return if not service.cooled_off?
-      service.update(last_observation_attempt:Time.now)
+      DB.transaction do
+        service.lock!
+        return if not service.cooled_off?
+        service.update(last_observation_attempt:Time.now)
+      end
 
       puts "Attempting observation of #{service.id_string}"
       
