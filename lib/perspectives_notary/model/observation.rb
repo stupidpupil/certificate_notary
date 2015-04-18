@@ -13,11 +13,5 @@ module PerspectivesNotary
 
     end
 
-    def self.observation_needed_for?(service)
-      return true if Observation.where(service:service).none?
-      return true if Observation.where(service:service).all.max {|o| o[:end]}[:end] < (Time.now - Config.observation_cool_off) 
-      return false
-    end
-
   end
 end
