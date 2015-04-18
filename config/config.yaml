@@ -2,16 +2,15 @@ defaults: &defaults
   sni: <%= ENV['NOTARY_SNI'] || true %>
   private_key_encoded: <%= ENV['NOTARY_PRIVATE_KEY'] %>
   observation_update_limit: <%= ENV['NOTARY_OBS_UPDATE_LIMIT'] || 60*60*48 %> # Create a new observation after 2 days
-  observation_cool_off: <%= ENV['NOTARY_OBS_COOL_OFF'] || 60*30 %> # 30 minutes
-  auto_reobserve_interval: <%= ENV['NOTARY_AUTO_REOBS_INTERVAL'] || 60*60*6 %> #6 hours
-  auto_reobserve_count: <%= ENV['NOTARY_AUTO_REOBS_COUNT'] || 20 %>
+  observation_cool_off: <%= ENV['NOTARY_OBS_COOL_OFF'] || 60*45 %> # 45 minutes
+  auto_reobserve_interval: <%= ENV['NOTARY_AUTO_REOBS_INTERVAL'] || 60*60*12 %> #6 hours
+  auto_reobserve_limit: <%= ENV['NOTARY_AUTO_REOBS_LIMIT'] || 60*60*24*5 %> #5 days
 
 development:
   <<: *defaults
   db: 'sqlite://tmp/sqlite.db'
   observation_cool_off: 5
   auto_reobserve_interval: 20
-  auto_reobserve_count: 3
 
 testing:
   <<: *defaults

@@ -17,7 +17,7 @@ class NotaryApp
     service = nil
     PerspectivesNotary::DB.transaction do
       service = PerspectivesNotary::Service.find_or_create(host:host, port:port, service_type:service_type)
-      service.update(last_request:Time.now, auto_reobservation_count:0)
+      service.update(last_request:Time.now)
     end
 
     PerspectivesNotary::ObserveJob.new.async.perform(service)
