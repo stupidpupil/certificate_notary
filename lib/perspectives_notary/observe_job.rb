@@ -6,7 +6,8 @@ module PerspectivesNotary
     workers 4
 
     def perform(service)
-
+      PerspectivesNotary::DB.disconnect
+      
       puts "Attempting observation of #{service.id_string}"
  
       DB.transaction do

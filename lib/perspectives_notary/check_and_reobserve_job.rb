@@ -6,6 +6,7 @@ module PerspectivesNotary
     workers 2
 
     def perform
+      PerspectivesNotary::DB.disconnect
 
       puts "Checking services for auto reobservation"
 
