@@ -14,8 +14,11 @@ class NotaryApp
     port = req.params['port'] || 443
     service_type = req.params['service_type'] || 2
 
-    service = PerspectivesNotary::Service.find_or_create(host:host, port:port, service_type:service_type)
-    service.update(last_request:Time.now)
+    service = nil
+    PerspectivesNotary::DB.transaction do
+      service = PerspectivesNotary::Service.find_or_create(host:host, port:port, service_type:service_type)
+      service.update(last_request:Time.now, auto_reobservation_count:0)
+    end
 
     PerspectivesNotary::ObserveJob.new.async.perform(service)
 
