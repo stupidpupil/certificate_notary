@@ -13,10 +13,10 @@ module PerspectivesNotary
       cert = ssl_client.peer_cert
 
       return OpenSSL::Digest::MD5.new(cert.to_der).to_s.scan(/../).join(":")
-      
+
     ensure
-      ssl_client.close
-      tcp_client.close
+      ssl_client.close if ssl_client
+      tcp_client.close if tcp_client
     end
 
   end
