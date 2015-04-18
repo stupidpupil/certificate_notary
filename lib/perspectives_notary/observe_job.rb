@@ -8,6 +8,8 @@ module PerspectivesNotary
 
       service = "#{host}:#{port},#{service_type}"
 
+      puts "ObserveJob #{service} #{auto_count}"
+
       return if not PerspectivesNotary::Observation.observation_needed_for? service
       
       fingerprint = PerspectivesNotary::OpenSSLScanner.fingerprint(host, port)
