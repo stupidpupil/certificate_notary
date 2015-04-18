@@ -11,8 +11,8 @@ class NotaryApp
 
     host = req.params['host']
     raise "No host given!" unless host
-    port = req.params['port'] || 443
-    service_type = req.params['service_type'] || 2
+    port = req.params['port'] || '443'
+    service_type = req.params['service_type'] || '2'
 
     service = nil
     PerspectivesNotary::DB.transaction do
