@@ -14,8 +14,8 @@ module PerspectivesNotary
 
       puts "Attempting observation of #{service.id_string}"
       
-      fingerprint = PerspectivesNotary::OpenSSLScanner.fingerprint(service.host, service.port)
-      service.observe_fingerprint(fingerprint)
+      der_encoded_cert = PerspectivesNotary::OpenSSLScanner.der_encoded_cert_for(service.host, service.port)
+      service.observe_der_encoded_cert(der_encoded_cert)
 
       if ((Time.now+Config.auto_reobserve_limit)-service.last_request) < Config.auto_reobserve_limit
         after(Config.auto_reobserve_interval) {ObserveJob.new.perform(service)}

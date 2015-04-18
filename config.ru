@@ -22,7 +22,7 @@ class NotaryApp
 
     PerspectivesNotary::ObserveJob.new.async.perform(service)
 
-    return [404, {"Content-Type" => "text/plain"}, [""]] if service.observations.none?
+    return [404, {"Content-Type" => "text/plain"}, [""]] if service.timespans.none?
 
     [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service)]]
   end

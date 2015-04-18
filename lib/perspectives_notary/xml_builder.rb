@@ -5,9 +5,11 @@ module PerspectivesNotary
       xml = ""
       packed_data = ""
 
-      observations = Observation.where(service:service).all
+      timespans = Timespan.where(service:service).all
 
-      observations.group_by{|k| k[:fingerprint]}.each_pair do |fp, timestamps|
+      timespans.group_by{|k| k.certificate}.each_pair do |certificate, timestamps|
+
+        fp = certificate.md5.scan(/../).join(':')
 
         #
         # Packed Data

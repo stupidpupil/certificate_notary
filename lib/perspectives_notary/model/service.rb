@@ -1,6 +1,6 @@
 module PerspectivesNotary
   class Service < Sequel::Model
-    one_to_many :observations
+    one_to_many :timespans
 
     def id_string
       return "#{host}:#{port},#{service_type}"
@@ -12,8 +12,18 @@ module PerspectivesNotary
       false
     end
 
-    def observe_fingerprint(fingerprint)
-      Observation.observe_fingerprint(self, fingerprint)
+    def observe_der_encoded_cert(der_encoded_cert)
+
+      certificate = Certificate.with_der_encoded_cert(der_encoded_cert)
+
+      most_recent_obs = Timespan.where(service: self).last
+
+      if most_recent_obs.nil? or most_recent_obs.certificate != certificate or (Time.now - most_recent_obs[:end]) > Config.observation_update_limit
+        return Timespan.create(service:self, certificate:certificate, start:Time.now, end:Time.now)
+      else
+        most_recent_obs.update(end:Time.now)
+      end
+
     end
 
   end
