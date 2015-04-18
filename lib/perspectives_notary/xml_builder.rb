@@ -1,7 +1,7 @@
 module PerspectivesNotary
   class XMLBuilder
 
-    def self.xml_for_service(service)
+    def self.xml_for_service(service, fp='md5')
       xml = ""
       packed_data = ""
 
@@ -9,7 +9,7 @@ module PerspectivesNotary
 
       timespans.group_by{|k| k.certificate}.each_pair do |certificate, timestamps|
 
-        fp = certificate.md5.scan(/../).join(':')
+        fp = certificate[fp.to_sym].scan(/../).join(':')
 
         #
         # Packed Data

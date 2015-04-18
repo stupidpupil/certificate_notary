@@ -4,6 +4,9 @@ require 'perspectives_notary'
 
 class NotaryApp
 
+  VALID_PARAMS = ['host', 'port', 'service_type', 'x-fp']
+  VALID_FP_HASHES = ['sha256', 'md5']
+
   def initialize
     super
     PerspectivesNotary::CheckAndReobserveJob.new.perform
@@ -18,9 +21,11 @@ class NotaryApp
     host = req.params['host']
     port = req.params['port'] || '443'
     service_type = req.params['service_type'] || '2'
+    fp = req.params['x-fp'] || 'md5'
 
     return [501, {"Content-Type" => 'text/plain'}, ['Unknown service type']] if service_type != '2'
-    return [400, {"Content-Type" => 'text/plain'}, ['Bad request']] if (req.params.keys | ['host', 'port', 'service_type']) != ['host', 'port', 'service_type']
+    return [501, {"Content-Type" => 'text/plain'}, ['Unknown fingerprint hash']] if not VALID_FP_HASHES.include? fp
+    return [400, {"Content-Type" => 'text/plain'}, ['Bad request']] if (req.params.keys | VALID_PARAMS ) != VALID_PARAMS
 
     service = nil
     PerspectivesNotary::DB.transaction do
@@ -32,7 +37,7 @@ class NotaryApp
 
     return [404, {"Content-Type" => "text/plain"}, [""]] if service.timespans.none?
 
-    [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service)]]
+    [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service, fp)]]
   end
 end
 
