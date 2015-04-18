@@ -2,7 +2,7 @@ defaults: &defaults
   sni: true
   private_key_encoded: <%= ENV['NOTARY_PRIVATE_KEY'] %>
   observation_update_limit: <%= 60*60*48 %> # Create a new observation after 2 days
-  observation_cool_off: <%= 60*5 %> # 5 minutes
+  observation_cool_off: <%= 60*30 %> # 5 minutes
 
 development:
   <<: *defaults
