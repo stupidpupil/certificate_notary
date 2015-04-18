@@ -17,7 +17,7 @@ module PerspectivesNotary
       fingerprint = PerspectivesNotary::OpenSSLScanner.fingerprint(service.host, service.port)
       service.observe_fingerprint(fingerprint)
 
-      if ((Time.now+Config.auto_reobserve_limit)-service.last_request) < config.auto_reobserve_limit
+      if ((Time.now+Config.auto_reobserve_limit)-service.last_request) < Config.auto_reobserve_limit
         after(Config.auto_reobserve_interval) {ObserveJob.new.perform(service)}
       end
 
