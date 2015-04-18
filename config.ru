@@ -25,7 +25,7 @@ class NotaryApp
 
     return [501, {"Content-Type" => 'text/plain'}, ['Unknown service type']] if service_type != '2'
     return [501, {"Content-Type" => 'text/plain'}, ['Unknown fingerprint hash']] if not VALID_FP_HASHES.include? fp
-    return [400, {"Content-Type" => 'text/plain'}, ['Bad request']] if (req.params.keys | VALID_PARAMS ) != VALID_PARAMS
+    return [400, {"Content-Type" => 'text/plain'}, ['Bad request']] if (req.params.keys | VALID_PARAMS ).length != VALID_PARAMS.length
 
     service = nil
     PerspectivesNotary::DB.transaction do
