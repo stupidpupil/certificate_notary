@@ -5,7 +5,7 @@ module PerspectivesNotary
       xml = ""
       packed_data = ""
 
-      timespans = Timespan.where(service:service).all
+      timespans = Timespan.eager(:certificate).where(service:service).all
 
       timespans.group_by{|k| k.certificate}.each_pair do |certificate, timestamps|
 
