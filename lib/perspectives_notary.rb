@@ -15,5 +15,6 @@ require 'perspectives_notary/model/timespan'
 
 require 'perspectives_notary/xml_builder'
 require 'perspectives_notary/openssl_scanner'
-require 'perspectives_notary/observe_job'
-require 'perspectives_notary/check_and_reobserve_job'
+
+require 'perspectives_notary/jobs/observe_job'
+require 'perspectives_notary/jobs/check_and_reobserve_job'
