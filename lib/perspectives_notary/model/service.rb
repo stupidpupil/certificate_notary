@@ -14,6 +14,8 @@ module PerspectivesNotary
 
     def observe_der_encoded_cert(der_encoded_cert)
 
+      return if der_encoded_cert.nil?
+
       certificate = Certificate.with_der_encoded_cert(der_encoded_cert)
 
       most_recent_obs = Timespan.where(service: self).last
