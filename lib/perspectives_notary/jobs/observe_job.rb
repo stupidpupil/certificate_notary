@@ -8,7 +8,7 @@ module PerspectivesNotary
     def perform(service)
       PerspectivesNotary::DB.disconnect
       
-      puts "Attempting observation of #{service.id_string}"
+      puts "Asked to observe #{service.id_string}"
  
       DB.transaction do
         service.lock!
