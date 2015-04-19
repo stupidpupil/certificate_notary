@@ -13,7 +13,9 @@ module PerspectivesNotary
 
       cert = ssl_client.peer_cert
 
-    rescue SocketError
+    rescue SocketError => e
+
+      puts "Error scanning #{host}:#{port} - #{e.inspect}"
       cert = nil
 
     ensure
@@ -22,6 +24,6 @@ module PerspectivesNotary
 
       return (cert ? cert.to_der : nil)
     end
-    
+
   end
 end
