@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Perspectives Network Notary Server</title>
+    <link rel="stylesheet" href="css/index.css" type="text/css">
+</head>
+
+<body>
+  <div class='container'>
+    <div class='section info'>
+    <h1>Ruby/Rack Network Notary Server</h1>
+    <div class='box'>
+      <p>This is a 'network notary' server. It collects and shares information on SSL certificates from around the internet.</p>
+      <p>For more information see <a href="http://perspectives-project.org">http://perspectives-project.org</a>.</p>
+      <p>You can add this server to your Perspectives client with the following public key:</p>
+      <div class='key'>
+        <pre><%= PerspectivesNotary::Config.private_key.public_key.to_pem %></pre>
+      </div>
+      <br>
+      <table>
+        <tr><th class='th-title'>Server Details</th><th colspan="2"></th></tr>
+        <tr>
+          <% if PerspectivesNotary::Config.sni %>
+            <td>Server Name Indication</td>
+            <td class="td-status-on">On</td>
+            <td>This notary uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"> Server Name Indication </a>when scanning websites.</td>
+          <% else %>
+            <td>Server Name Indication</td>
+            <td class="td-status-off">On</td>
+            <td>This notary does not use Server Name Indication when scanning websites.</td>
+          <% end %>          
+        </tr>
+
+      </table>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

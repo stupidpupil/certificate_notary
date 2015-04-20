@@ -7,6 +7,8 @@ gem 'sequel'
 gem 'rake'
 gem 'sucker_punch', '~> 1.0'
 
+gem 'rack-server-pages'
+
 group 'development' do
   gem 'sqlite3'
 end

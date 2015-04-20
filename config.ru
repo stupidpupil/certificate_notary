@@ -1,5 +1,6 @@
 $:<<'lib'
 
+require 'rack-server-pages'
 require 'perspectives_notary'
 
 class NotaryApp
@@ -16,7 +17,7 @@ class NotaryApp
 
     req = Rack::Request.new(env)
 
-    return [200, {"Content-Type" => 'text/plain'}, [PerspectivesNotary::Config.private_key.public_key.to_pem]] if req.path == '/public-key'
+    return Rack::ServerPages.call(env) if req.params.empty?
 
     host = req.params['host']
     port = req.params['port'] || '443'
@@ -40,6 +41,5 @@ class NotaryApp
     [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service, fp)]]
   end
 end
-
 
 run NotaryApp.new

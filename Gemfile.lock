@@ -8,6 +8,8 @@ GEM
     puma (2.11.2)
       rack (>= 1.1, < 2.0)
     rack (1.6.0)
+    rack-server-pages (0.0.6)
+      rack
     rake (10.4.2)
     sequel (4.21.0)
     settingslogic (2.0.9)
@@ -23,6 +25,7 @@ PLATFORMS
 DEPENDENCIES
   pg
   puma
+  rack-server-pages
   rake
   sequel
   settingslogic
