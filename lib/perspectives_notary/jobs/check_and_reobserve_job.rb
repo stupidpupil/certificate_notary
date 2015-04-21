@@ -7,7 +7,7 @@ module PerspectivesNotary
       puts "Checking services for auto reobservation"
 
       Service.where { last_request >= Time.now-Config.auto_reobs.limit and last_observation_attempt <= Time.now-Config.auto_reobs.interval}.each do |s|
-        ObserveJob.new.async.perform s
+        ObserveJob.enqueue s.id
       end
 
 
