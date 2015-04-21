@@ -20,7 +20,7 @@ module PerspectivesNotary
           cert = ssl_client.peer_cert
         }
 
-      rescue Timeout::Error, SocketError => e
+      rescue Timeout::Error, SocketError, OpenSSL::SSL::SSLError => e
 
         puts "Error scanning #{host}:#{port} - #{e.inspect}"
         cert = nil
