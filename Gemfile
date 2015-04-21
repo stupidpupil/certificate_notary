@@ -5,7 +5,7 @@ ruby '2.2.0'
 gem 'settingslogic'
 gem 'sequel'
 gem 'rake'
-gem 'sucker_punch', '~> 1.0'
+gem 'que'
 
 gem 'rack-server-pages'
 

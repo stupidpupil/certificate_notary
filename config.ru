@@ -3,6 +3,7 @@ $:<<'lib'
 require 'rack-server-pages'
 require 'perspectives_notary'
 
+
 class NotaryApp
 
   VALID_PARAMS = ['host', 'port', 'service_type', 'x-fp']
@@ -10,7 +11,6 @@ class NotaryApp
 
   def initialize
     super
-    PerspectivesNotary::CheckAndReobserveJob.new.perform
   end
 
   def call(env)
@@ -34,12 +34,16 @@ class NotaryApp
       service.update(last_request:Time.now)
     end
 
-    PerspectivesNotary::ObserveJob.new.async.perform(service)
+    PerspectivesNotary::ObserveJob.enqueue service.id
 
     return [404, {"Content-Type" => "text/plain"}, [""]] if service.timespans.none?
 
     [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service, fp)]]
   end
+end
+
+if PerspectivesNotary::DB[:que_jobs].where(:job_class => "PerspectivesNotary::CheckAndReobserveJob").count == 0
+  PerspectivesNotary::CheckAndReobserveJob.enqueue
 end
 
 run NotaryApp.new

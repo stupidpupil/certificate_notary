@@ -1,11 +1,7 @@
-require 'sucker_punch'
-
 module PerspectivesNotary
-  class CheckAndReobserveJob
-    include SuckerPunch::Job
-    workers 2
+  class CheckAndReobserveJob < Que::Job
 
-    def perform
+    def run
       PerspectivesNotary::DB.disconnect
 
       puts "Checking services for auto reobservation"
@@ -14,7 +10,11 @@ module PerspectivesNotary
         ObserveJob.new.async.perform s
       end
 
-      after(Config.auto_reobs.period) {CheckAndReobserveJob.new.perform}
+
+      if DB[:que_jobs].where(:job_class => "PerspectivesNotary::CheckAndReobserveJob").count == 1
+        PerspectivesNotary::CheckAndReobserveJob.enqueue run_at:(Time.now + Config.auto_reobs.period)
+      end
+
     end
   end
 

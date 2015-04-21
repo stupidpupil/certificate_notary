@@ -1,11 +1,10 @@
-require 'sucker_punch'
-
 module PerspectivesNotary
-  class ObserveJob
-    include SuckerPunch::Job
-    workers 4
+  class ObserveJob < Que::Job
 
-    def perform(service)
+    def run(service_id)
+
+      service = Service[service_id]
+
       PerspectivesNotary::DB.disconnect
       
       puts "Asked to observe #{service.id_string}"
@@ -19,7 +18,7 @@ module PerspectivesNotary
       puts "Scanning #{service.id_string}"
 
       
-      der_encoded_cert = PerspectivesNotary::OpenSSLScanner.der_encoded_cert_for(service.host, service.port)
+      der_encoded_cert = OpenSSLScanner.der_encoded_cert_for(service.host, service.port)
       service.observe_der_encoded_cert(der_encoded_cert)
 
     end
