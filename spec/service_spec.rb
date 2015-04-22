@@ -36,6 +36,17 @@ describe PerspectivesNotary::Service do
         end
       end
 
+      context 'with an existing recent timespan for a different certificate' do
+        let!(:t){PerspectivesNotary::Timespan.create(service:s, certificate:PerspectivesNotary::Certificate.with_der_encoded_cert('1'), start:Time.now-10, end:Time.now-5)}
+
+        it 'creates a new timespan' do
+          s.observe_der_encoded_cert ''
+          expect(s.timespans.count).to eql 2
+          expect(s.timespans.last.end).to be_within(2).of(Time.now)
+          expect(s.timespans.last.id).to_not be t.id
+        end        
+      end
+
       context 'with an existing distant timespan' do
         let!(:t){PerspectivesNotary::Timespan.create(service:s, certificate:PerspectivesNotary::Certificate.with_der_encoded_cert(''), start:Time.at(0), end:Time.at(5))}
 
