@@ -2,7 +2,6 @@ require_relative 'spec_helper'
 
 describe PerspectivesNotary::Service do
 
-
   describe '#observe_der_encoded_cert' do
 
     let(:s) { PerspectivesNotary::Service.create(host:'example.com',port:'443',service_type:'2')}
