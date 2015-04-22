@@ -7,9 +7,10 @@ module PerspectivesNotary
 
       timespans = Timespan.eager(:certificate).where(service:service).all
 
-      timespans.group_by{|k| k.certificate}.each_pair do |certificate, timestamps|
+      Certificate.eager(:timespans).where(service:service).all.each do |certificate|
 
         fp = certificate[fp.to_sym].scan(/../).join(':')
+        timestamps = certificate.timespans
 
         #
         # Packed Data
