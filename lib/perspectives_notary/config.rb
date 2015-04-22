@@ -1,3 +1,4 @@
+require 'openssl'
 require 'settingslogic'
 
 module PerspectivesNotary
