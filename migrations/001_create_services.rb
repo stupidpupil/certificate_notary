@@ -10,7 +10,7 @@ Sequel.migration do
 
       Time :last_request
       Time :last_observation_attempt
-      Integer :auto_reobservation_count
+      Integer :error_count, default:0
     end
   end
 end

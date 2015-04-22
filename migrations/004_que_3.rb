@@ -1,9 +1,9 @@
 Sequel.migration do
-  def self.up
+  up do
     Que.migrate! :version => 3
   end
 
-  def self.down
+  down do
     Que.migrate! :version => 0
   end
 end
