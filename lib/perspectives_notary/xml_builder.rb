@@ -1,13 +1,13 @@
 module PerspectivesNotary
   class XMLBuilder
 
-    def self.xml_for_service(service, fp='md5')
+    def self.xml_for_service(service, hash='md5')
       xml = ""
       packed_data = ""
 
       service.certificates_dataset.eager(:timespans).all.each do |certificate|
 
-        fp = certificate[fp.to_sym].scan(/../).join(':')
+        fp = certificate[hash.to_sym].scan(/../).join(':')
         timestamps = certificate.timespans
 
         #
