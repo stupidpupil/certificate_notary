@@ -2,6 +2,8 @@ require 'openssl'
 
 module PerspectivesNotary
   class Certificate < Sequel::Model
+    one_to_many :timespans
+    many_to_many :services, :join_table => :timespans
 
     def self.with_der_encoded_cert(der_encoded_cert)
       sha256 = OpenSSL::Digest::SHA256.new(der_encoded_cert).to_s
