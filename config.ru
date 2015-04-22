@@ -34,10 +34,12 @@ class NotaryApp
       service.update(last_request:Time.now)
     end
 
+    if service.timespans.none?
+      PerspectivesNotary::ObserveJob.enqueue service.id, priority:50
+      return [404, {"Content-Type" => "text/plain"}, [""]] 
+    end
+    
     PerspectivesNotary::ObserveJob.enqueue service.id
-
-    return [404, {"Content-Type" => "text/plain"}, [""]] if service.timespans.none?
-
     [200, {"Content-Type" => "application/xml"}, [PerspectivesNotary::XMLBuilder.xml_for_service(service, fp)]]
   end
 end
