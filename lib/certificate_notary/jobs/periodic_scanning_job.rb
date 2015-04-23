@@ -10,9 +10,8 @@ module CertificateNotary
         ScanServiceJob.enqueue s.id
       end
 
-
-      if DB[:que_jobs].where(:job_class => "CertificateNotary::PeriodicScanningJob").count == 1
-        CertificateNotary::PeriodicScanningJob.enqueue run_at:(Time.now + Config.auto_reobs.period)
+      if DB[:que_jobs].where(:job_class => self.class.to_s).count == 1
+        PeriodicScanningJob.enqueue run_at:(Time.now + Config.auto_reobs.period)
       end
 
     end
