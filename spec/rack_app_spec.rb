@@ -38,7 +38,22 @@ describe CertificateNotary::PerspectivesAPI::RackApp do
       expect(last_response.status).to be 200
       expect(CertificateNotary::DB[:que_jobs].where(:job_class => "CertificateNotary::ScanServiceJob").count).to be 1
     end
+
   end
+
+  context 'when there is a timespan for the requested service and an If-Modified-Since header that matches the end of the latest timespan' do
+    let!(:s) { CertificateNotary::Service.create(host:'example.com',port:'443',service_type:'2')}
+    let!(:c) { s.observe_der_encoded_cert ''}
+
+    it 'returns a 304 and enqueues a ScanServiceJob' do
+      header 'If-Modified-Since', CertificateNotary::Service.find(host:'example.com',port:'443',service_type:'2').timespans.last.end.httpdate
+      get '/?host=example.com'
+      expect(last_response.status).to be 304
+      expect(CertificateNotary::DB[:que_jobs].where(:job_class => "CertificateNotary::ScanServiceJob").count).to be 1
+
+    end
+  end
+
 
   context 'when no host is given' do
     it 'returns a 400' do
