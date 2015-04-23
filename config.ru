@@ -6,15 +6,10 @@ require 'certificate_notary'
 
 class NotaryApp
 
-  def initialize
-    @perspective_api_app = CertificateNotary::PerspectivesAPI::RackApp.new
-    super
-  end
-
   def call(env)
     req = Rack::Request.new(env)
     return Rack::ServerPages.call(env) if req.params.empty?
-    return @perspective_api_app.call(env)
+    return CertificateNotary::PerspectivesAPI::RackApp.call(env)
   end
 
 end

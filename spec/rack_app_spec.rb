@@ -20,7 +20,7 @@ describe CertificateNotary::PerspectivesAPI::RackApp do
     CertificateNotary::Service.dataset.delete 
   end
 
-  let(:app){CertificateNotary::PerspectivesAPI::RackApp.new}
+  let(:app){CertificateNotary::PerspectivesAPI::RackApp}
 
   context 'when there are no records for the request service' do
     it "returns a 404 and enqueues a ScanServiceJob" do

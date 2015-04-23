@@ -6,7 +6,7 @@ module CertificateNotary
       VALID_PARAMS = ['host', 'port', 'service_type', 'x-fp']
       VALID_FP_HASHES = ['sha256', 'md5']
 
-      def call(env)
+      def self.call(env)
         req = Rack::Request.new(env)
         
         host = req.params['host']
@@ -14,33 +14,44 @@ module CertificateNotary
         service_type = req.params['service_type'] || '2'
         fp = req.params['x-fp'] || 'md5'
 
-        return [501, {"Content-Type" => 'text/plain'}, ['No host given']] if host.nil?
-        return [501, {"Content-Type" => 'text/plain'}, ['Unknown service type']] if service_type != '2'
-        return [501, {"Content-Type" => 'text/plain'}, ['Unknown fingerprint hash']] if not VALID_FP_HASHES.include? fp
-        return [400, {"Content-Type" => 'text/plain'}, ['Bad request']] if (req.params.keys | VALID_PARAMS ).length != VALID_PARAMS.length
+        return bad_request('No host given') if host.nil?
+        return bad_request('Bad request') if (req.params.keys | VALID_PARAMS ).length != VALID_PARAMS.length
 
-        service = nil
-        DB.transaction do
-          service = Service.find_or_create(host:host, port:port, service_type:service_type)
-          service.update(last_request:Time.now)
-        end
+        return not_implemented('Unknown service type') if service_type != '2'
+        return not_implemented('Unknown fingerprint hash') if not VALID_FP_HASHES.include? fp
 
-        if service.timespans.none?
-          ScanServiceJob.enqueue_unless_exists service.id, priority:50
-          return [404, {"Content-Type" => "text/plain"}, [""]] 
-        end
+        service = Service.find_or_create(host:host, port:port, service_type:service_type)
+        service.update(last_request:Time.now)
 
+        return service_not_found(service) if service.timespans.none?
+
+        ScanServiceJob.enqueue_unless_exists service.id
+        
         last_modified = service.timespans.last.end.httpdate
 
-        if env['HTTP_IF_MODIFIED_SINCE'] and env['HTTP_IF_MODIFIED_SINCE'] == last_modified
-          ScanServiceJob.enqueue_unless_exists service.id
-          return [304, {}, []]
-        end
-
+        return self.not_modified if env['HTTP_IF_MODIFIED_SINCE'] == last_modified
+    
         body = XMLBuilder.xml_for_service(service, fp)
-        ScanServiceJob.enqueue_unless_exists service.id
         [200, {"Content-Type" => "application/xml", "Last-Modified" => last_modified}, [body]]
       end
+
+      def self.not_implemented(message = '')
+        [501, {"Content-Type" => 'text/plain'}, [message]]
+      end
+
+      def self.bad_request(message = '')
+        [400, {"Content-Type" => 'text/plain'}, [message]]
+      end
+
+      def self.service_not_found(service)
+        ScanServiceJob.enqueue_unless_exists service.id, priority:50
+        [404, {"Content-Type" => "text/plain"}, [""]] 
+      end
+
+      def self.not_modified
+        [304, {}, []]
+      end
+
     end
   end
 end
