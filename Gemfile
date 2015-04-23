@@ -12,6 +12,7 @@ gem 'rack-server-pages'
 
 group 'testing' do
   gem 'rack-test'
+  gem 'rspec'
 end
 
 group 'production' do
