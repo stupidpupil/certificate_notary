@@ -16,13 +16,13 @@
       <p>For more information see <a href="http://perspectives-project.org">http://perspectives-project.org</a>.</p>
       <p>You can add this server to your Perspectives client with the following public key:</p>
       <div class='key'>
-        <pre><%= PerspectivesNotary::Config.private_key.public_key.to_pem %></pre>
+        <pre><%= CertificateNotary::Config.private_key.public_key.to_pem %></pre>
       </div>
       <br>
       <table>
         <tr><th class='th-title'>Server Details</th><th colspan="2"></th></tr>
         <tr>
-          <% if PerspectivesNotary::Config.sni %>
+          <% if CertificateNotary::Config.sni %>
             <td>Server Name Indication</td>
             <td class="td-status-on">On</td>
             <td>This notary uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"> Server Name Indication </a>when scanning websites.</td>

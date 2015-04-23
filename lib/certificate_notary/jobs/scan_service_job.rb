@@ -1,9 +1,9 @@
-module PerspectivesNotary
+module CertificateNotary
   class ScanServiceJob < Que::Job
 
     def run(service_id)
 
-      PerspectivesNotary::DB.disconnect
+      CertificateNotary::DB.disconnect
       
       DB.transaction do
         service = Service.for_update.first(id:service_id)

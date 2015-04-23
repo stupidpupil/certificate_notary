@@ -1,2 +1,2 @@
 ENV['RACK_ENV'] = 'testing'
-require 'perspectives_notary'
+require 'certificate_notary'

@@ -1,6 +1,6 @@
 require 'rack'
 
-module PerspectivesNotary
+module CertificateNotary
   module PerspectivesAPI
     class RackApp
       VALID_PARAMS = ['host', 'port', 'service_type', 'x-fp']

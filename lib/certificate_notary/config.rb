@@ -1,7 +1,7 @@
 require 'openssl'
 require 'settingslogic'
 
-module PerspectivesNotary
+module CertificateNotary
   class Config < Settingslogic
     source File.expand_path('../../../config/config.yaml', __FILE__)
     namespace ENV['RACK_ENV'] || 'development'

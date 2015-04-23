@@ -1,4 +1,4 @@
-module PerspectivesNotary
+module CertificateNotary
   class Service < Sequel::Model
     one_to_many :timespans
     many_to_many :certificates, :join_table => :timespans

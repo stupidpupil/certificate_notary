@@ -1,7 +1,7 @@
 require 'socket'
 require 'openssl'
 
-module PerspectivesNotary
+module CertificateNotary
   class OpenSSLScanner
 
     def self.der_encoded_cert_for(host, port)

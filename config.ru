@@ -1,13 +1,13 @@
 $:<<'lib'
 
 require 'rack-server-pages'
-require 'perspectives_notary'
+require 'certificate_notary'
 
 
 class NotaryApp
 
   def initialize
-    @perspective_api_app = PerspectivesNotary::PerspectivesAPI::RackApp.new
+    @perspective_api_app = CertificateNotary::PerspectivesAPI::RackApp.new
     super
   end
 
@@ -19,8 +19,8 @@ class NotaryApp
 
 end
 
-if PerspectivesNotary::DB[:que_jobs].where(:job_class => "PerspectivesNotary::PeriodicScanningJob").count == 0
-  PerspectivesNotary::PeriodicScanningJob.enqueue
+if CertificateNotary::DB[:que_jobs].where(:job_class => "CertificateNotary::PeriodicScanningJob").count == 0
+  CertificateNotary::PeriodicScanningJob.enqueue
 end
 
 run NotaryApp.new

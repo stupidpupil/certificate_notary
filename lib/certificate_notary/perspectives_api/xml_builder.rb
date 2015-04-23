@@ -1,4 +1,4 @@
-module PerspectivesNotary
+module CertificateNotary
   module PerspectivesAPI
     class XMLBuilder
 

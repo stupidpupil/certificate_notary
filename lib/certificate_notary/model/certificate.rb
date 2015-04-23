@@ -1,6 +1,6 @@
 require 'openssl'
 
-module PerspectivesNotary
+module CertificateNotary
   class Certificate < Sequel::Model
     one_to_many :timespans
     many_to_many :services, :join_table => :timespans

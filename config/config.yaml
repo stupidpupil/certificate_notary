@@ -11,7 +11,7 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  db: 'postgres://localhost/perspectives_notary_development'
+  db: 'postgres://localhost/certificate_notary_development'
   observation_cool_off: 30
   auto_reobs:
     interval: 120
@@ -20,7 +20,7 @@ development:
 
 testing:
   <<: *defaults
-  db: 'postgres://localhost/perspectives_notary_testing'
+  db: 'postgres://localhost/certificate_notary_testing'
   private_key_encoded: <%=  Base64.strict_encode64(OpenSSL::PKey::RSA.new(1024).to_der) %>
 
 production:

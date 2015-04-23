@@ -9,7 +9,7 @@ port        ENV['PORT']     || 9292
 environment ENV['RACK_ENV'] || 'development'
 
 on_worker_boot do
-  PerspectivesNotary::DB.disconnect
+  CertificateNotary::DB.disconnect
   Que.mode = :async
 
 end

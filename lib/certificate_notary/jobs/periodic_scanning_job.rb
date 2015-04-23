@@ -1,8 +1,8 @@
-module PerspectivesNotary
+module CertificateNotary
   class PeriodicScanningJob < Que::Job
 
     def run
-      PerspectivesNotary::DB.disconnect
+      CertificateNotary::DB.disconnect
 
       puts "Checking services for periodic scanning"
 
@@ -11,8 +11,8 @@ module PerspectivesNotary
       end
 
 
-      if DB[:que_jobs].where(:job_class => "PerspectivesNotary::PeriodicScanningJob").count == 1
-        PerspectivesNotary::PeriodicScanningJob.enqueue run_at:(Time.now + Config.auto_reobs.period)
+      if DB[:que_jobs].where(:job_class => "CertificateNotary::PeriodicScanningJob").count == 1
+        CertificateNotary::PeriodicScanningJob.enqueue run_at:(Time.now + Config.auto_reobs.period)
       end
 
     end

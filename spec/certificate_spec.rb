@@ -1,15 +1,15 @@
 require_relative 'spec_helper'
 
-describe PerspectivesNotary::Certificate do
+describe CertificateNotary::Certificate do
 
   after(:each) do
-    PerspectivesNotary::Timespan.dataset.delete
-    PerspectivesNotary::Certificate.dataset.delete
+    CertificateNotary::Timespan.dataset.delete
+    CertificateNotary::Certificate.dataset.delete
   end
 
   context 'creating with a DER encoded certificate' do
 
-    cert = PerspectivesNotary::Certificate.with_der_encoded_cert('')
+    cert = CertificateNotary::Certificate.with_der_encoded_cert('')
 
     it 'calculate and saves MD5 and SHA256 checksums' do
       expect(cert.md5).to eql 'd41d8cd98f00b204e9800998ecf8427e'
