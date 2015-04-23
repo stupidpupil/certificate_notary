@@ -15,6 +15,7 @@ module CertificateNotary
 
         return bad_request('No host given') if req.params['host'].nil?
         return bad_request('Bad request') if (req.params.keys | VALID_PARAMS ).length != VALID_PARAMS.length
+        return bad_request('Invalid port number') if req.params['port'].to_i < 1 or req.params['port'].to_i > 65535
 
         return not_implemented('Unknown service type') if req.params['service_type'] != '2'
         return not_implemented('Unknown fingerprint hash') if not VALID_FP_HASHES.include? req.params['x-fp']
