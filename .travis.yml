@@ -1,6 +1,4 @@
 language: ruby
-
-language: ruby
 rvm:
   - 2.2.0
   - rbx-2
@@ -10,3 +8,5 @@ addons:
 
 before_script:
   - psql -c 'create database certificate_notary_testing;' -U postgres
+
+script: bundle exec rspec spec
