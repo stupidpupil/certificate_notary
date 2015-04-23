@@ -16,6 +16,7 @@ require 'certificate_notary/model/service'
 require 'certificate_notary/model/certificate'
 require 'certificate_notary/model/timespan'
 
+require 'certificate_notary/perspectives_api/packed_builder'
 require 'certificate_notary/perspectives_api/xml_builder'
 require 'certificate_notary/perspectives_api/rack_app'
 
