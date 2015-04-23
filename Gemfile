@@ -6,6 +6,7 @@ gem 'settingslogic'
 gem 'sequel'
 gem 'rake'
 gem 'que'
+gem 'pg'
 
 gem 'rack-server-pages'
 
@@ -13,11 +14,6 @@ group 'testing' do
   gem 'rack-test'
 end
 
-group 'development' do
-  gem 'sqlite3'
-end
-
 group 'production' do
-  gem 'pg'
   gem 'puma'
 end
