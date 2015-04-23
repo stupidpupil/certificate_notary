@@ -2,7 +2,7 @@ module CertificateNotary
   class ScanServiceJob < Que::Job
 
     def self.enqueue_unless_exists(service_id, *args)
-      return unless DB[:que_jobs].where(job_class:self.to_s).where('args->>0 = ?', service_id.to_s).count == 0
+      return unless DB[:que_jobs].where(job_class:self.to_s).where('args->>0 = ?', service_id.to_s).none?
       self.enqueue service_id, *args
     end
 
