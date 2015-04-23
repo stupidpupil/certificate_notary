@@ -26,19 +26,19 @@ module CertificateNotary
         end
 
         if service.timespans.none?
-          ScanServiceJob.enqueue service.id, priority:50
+          ScanServiceJob.enqueue_unless_exists service.id, priority:50
           return [404, {"Content-Type" => "text/plain"}, [""]] 
         end
 
         last_modified = service.timespans.last.end.httpdate
 
         if env['HTTP_IF_MODIFIED_SINCE'] and env['HTTP_IF_MODIFIED_SINCE'] == last_modified
-          ScanServiceJob.enqueue service.id
+          ScanServiceJob.enqueue_unless_exists service.id
           return [304, {}, []]
         end
 
         body = XMLBuilder.xml_for_service(service, fp)
-        ScanServiceJob.enqueue service.id
+        ScanServiceJob.enqueue_unless_exists service.id
         [200, {"Content-Type" => "application/xml", "Last-Modified" => last_modified}, [body]]
       end
     end
