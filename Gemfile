@@ -9,6 +9,10 @@ gem 'que'
 
 gem 'rack-server-pages'
 
+group 'testing' do
+  gem 'rack-test'
+end
+
 group 'development' do
   gem 'sqlite3'
 end
