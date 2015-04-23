@@ -3,7 +3,7 @@ module CertificateNotary
 
     def run(service_id)
 
-      CertificateNotary::DB.disconnect
+      DB.disconnect
       
       DB.transaction do
         service = Service.for_update.first(id:service_id)

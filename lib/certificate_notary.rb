@@ -8,7 +8,7 @@ require 'certificate_notary/config'
 
 module CertificateNotary
   DB = Sequel.connect(Config.db) unless defined?(DB)
-  Que.connection = CertificateNotary::DB
+  Que.connection = DB
   Sequel::Migrator.run(DB, File.expand_path('../../migrations', __FILE__), :use_transactions=>true)
 end
 
