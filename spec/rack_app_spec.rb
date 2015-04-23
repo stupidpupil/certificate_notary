@@ -40,4 +40,18 @@ describe CertificateNotary::PerspectivesAPI::RackApp do
     end
   end
 
+  context 'when no host is given' do
+    it 'returns a 400' do
+      get '/'
+      expect(last_response.status).to be 400
+    end
+  end
+
+  context 'when an unexpected parameter is given' do
+    it 'returns a 400' do
+      get '/?unexpected_parameter'
+      expect(last_response.status).to be 400
+    end
+  end
+
 end
