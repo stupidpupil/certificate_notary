@@ -26,19 +26,19 @@ module PerspectivesNotary
         end
 
         if service.timespans.none?
-          ObserveJob.enqueue service.id, priority:50
+          ScanServiceJob.enqueue service.id, priority:50
           return [404, {"Content-Type" => "text/plain"}, [""]] 
         end
 
         last_modified = service.timespans.last.end
 
         if env['HTTP_IF_MODIFIED_SINCE'] and env['HTTP_IF_MODIFIED_SINCE'] == last_modified.httpdate
-          ObserveJob.enqueue service.id
+          ScanServiceJob.enqueue service.id
           return [304, {}, []]
         end
 
         body = XMLBuilder.xml_for_service(service, fp)
-        ObserveJob.enqueue service.id
+        ScanServiceJob.enqueue service.id
         [200, {"Content-Type" => "application/xml", "Last-Modified" => last_modified.httpdate}, [body]]
       end
     end

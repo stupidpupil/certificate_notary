@@ -23,5 +23,5 @@ require 'perspectives_notary/openssl_scanner'
 
 
 
-require 'perspectives_notary/jobs/observe_job'
-require 'perspectives_notary/jobs/check_and_reobserve_job'
+require 'perspectives_notary/jobs/scan_service_job'
+require 'perspectives_notary/jobs/periodic_scanning_job'

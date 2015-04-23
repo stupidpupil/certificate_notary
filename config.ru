@@ -19,8 +19,8 @@ class NotaryApp
 
 end
 
-if PerspectivesNotary::DB[:que_jobs].where(:job_class => "PerspectivesNotary::CheckAndReobserveJob").count == 0
-  PerspectivesNotary::CheckAndReobserveJob.enqueue
+if PerspectivesNotary::DB[:que_jobs].where(:job_class => "PerspectivesNotary::PeriodicScanningJob").count == 0
+  PerspectivesNotary::PeriodicScanningJob.enqueue
 end
 
 run NotaryApp.new

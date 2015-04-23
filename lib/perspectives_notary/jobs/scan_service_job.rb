@@ -1,5 +1,5 @@
 module PerspectivesNotary
-  class ObserveJob < Que::Job
+  class ScanServiceJob < Que::Job
 
     def run(service_id)
 
@@ -8,8 +8,6 @@ module PerspectivesNotary
       DB.transaction do
         service = Service.for_update.first(id:service_id)
         service.lock!
-
-        puts "Asked to observe #{service.id_string}"
 
         destroy and return if not service.cooled_off?
         
