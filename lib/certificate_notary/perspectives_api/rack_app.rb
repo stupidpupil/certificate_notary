@@ -9,18 +9,22 @@ module CertificateNotary
       def self.call(env)
         req = Rack::Request.new(env)
         
-        host = req.params['host']
-        port = req.params['port'] || '443'
-        service_type = req.params['service_type'] || '2'
-        fp = req.params['x-fp'] || 'md5'
+        req.params['port'] ||= '443'
+        req.params['service_type'] ||= '2'
+        req.params['x-fp'] ||= 'md5'
 
-        return bad_request('No host given') if host.nil?
+        return bad_request('No host given') if req.params['host'].nil?
         return bad_request('Bad request') if (req.params.keys | VALID_PARAMS ).length != VALID_PARAMS.length
 
-        return not_implemented('Unknown service type') if service_type != '2'
-        return not_implemented('Unknown fingerprint hash') if not VALID_FP_HASHES.include? fp
+        return not_implemented('Unknown service type') if req.params['service_type'] != '2'
+        return not_implemented('Unknown fingerprint hash') if not VALID_FP_HASHES.include? req.params['x-fp']
 
-        service = Service.find_or_create(host:host, port:port, service_type:service_type)
+        call_with_valid_request(req)
+      end
+
+      def self.call_with_valid_request(req)
+
+        service = Service.find_or_create(host:req['host'], port:req['port'], service_type:req['service_type'])
         service.update(last_request:Time.now)
 
         return service_not_found(service) if service.timespans.none?
@@ -29,9 +33,9 @@ module CertificateNotary
         
         last_modified = service.timespans.last.end.httpdate
 
-        return self.not_modified if env['HTTP_IF_MODIFIED_SINCE'] == last_modified
+        return self.not_modified if req.env['HTTP_IF_MODIFIED_SINCE'] == last_modified
     
-        body = XMLBuilder.xml_for_service(service, fp)
+        body = XMLBuilder.xml_for_service(service, req.params['x-fp'])
         [200, {"Content-Type" => "application/xml", "Last-Modified" => last_modified}, [body]]
       end
 
