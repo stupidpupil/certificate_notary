@@ -4,6 +4,12 @@
 
 [Perspectives](http://perspectives-project.org/)-compatible SSL/TLS Certificate Notary
 
+## Features
+- SHA256 support (with `&x-fp=sha256`)
+- Stores certificates on scanning
+- Efficient Validation on Conditional GETs
+- Web server and scanner in a single process
+
 ## Own server setup
 
 ```bash
