@@ -10,7 +10,7 @@ module CertificateNotary
           fp = certificate[hash.to_sym].scan(/../).join(':')
 
           xml << "<key fp=\"#{fp}\" type=\"ssl\">"
-          xml << certificate.timespans.map {|ts| "<timestamp end=\"#{ts[:end].to_i}\" start=\"#{ts[:start].to_i}\"/>" }.join("\n")
+          xml << certificate.timespans_dataset.where(service:service).map {|ts| "<timestamp end=\"#{ts[:end].to_i}\" start=\"#{ts[:start].to_i}\"/>" }.join("\n")
           xml << "</key>"
 
         end
@@ -31,7 +31,7 @@ module CertificateNotary
           fp_bytes = certificate[hash.to_sym].scan(/../).map {|h| [h.hex].pack('C')}.join
           
           ts_bytes = ""
-          certificate.timespans.each do |ts|
+          certificate.timespans_dataset.where(service:service).each do |ts|
             [ts[:start].to_i, ts[:end].to_i].each do |t|
               ts_bytes << [(t >> 24) & 255, (t >> 16) & 255, (t >> 8) & 255, t & 255].pack('C'*4)
             end
