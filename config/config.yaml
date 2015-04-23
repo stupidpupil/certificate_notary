@@ -25,4 +25,4 @@ testing:
 
 production:
   <<: *defaults
-  db: <%= ENV['DATABASE_URL'] %>
+  db: <%= ENV['DATABASE_URL'] || 'postgres://localhost/certificate_notary_production'%>
