@@ -16,7 +16,9 @@ require 'perspectives_notary/model/service'
 require 'perspectives_notary/model/certificate'
 require 'perspectives_notary/model/timespan'
 
-require 'perspectives_notary/xml_builder'
+require 'perspectives_notary/perspectives_api/xml_builder'
+require 'perspectives_notary/perspectives_api/rack_app'
+
 require 'perspectives_notary/openssl_scanner'
 
 
