@@ -26,7 +26,7 @@ module CertificateNotary
       end
 
       def self.packed_data_for_service(service, hash='md5')
-        service.id_string + [0].pack('C') + service.certificates.map {|c| record_for_certificate(c, service, hash)}.inject(:+)
+        service.id_string + [0].pack('C') + service.certificates.map {|c| record_for_certificate(c, service, hash)}.reverse.inject(:+)
       end
 
     end
