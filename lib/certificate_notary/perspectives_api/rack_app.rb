@@ -20,40 +20,44 @@ module CertificateNotary
         return not_implemented('Unknown service type') if req.params['service_type'] != '2'
         return not_implemented('Unknown fingerprint hash') if not VALID_FP_HASHES.include? req.params['x-fp']
 
-        call_with_valid_request(req)
-      end
-
-      def self.call_with_valid_request(req)
-
-        service = Service.find_or_create(host:req['host'], port:req['port'], service_type:req['service_type'])
-        service.update(last_request:Time.now)
-
-        return service_not_found(service) if service.timespans.none?
-
-        ScanServiceJob.enqueue_unless_exists service.id
-        
-        last_modified = service.timespans.last.end.httpdate
-
-        return self.not_modified if req.env['HTTP_IF_MODIFIED_SINCE'] == last_modified
-    
-        body = XMLBuilder.xml_for_service(service, req.params['x-fp'])
-        [200, {"Content-Type" => "application/xml", "Last-Modified" => last_modified}, [body]]
-      end
-
-      def self.not_implemented(message = '')
-        [501, {"Content-Type" => 'text/plain'}, [message]]
+        valid_request(req)
       end
 
       def self.bad_request(message = '')
         [400, {"Content-Type" => 'text/plain'}, [message]]
       end
 
-      def self.service_not_found(service)
+      def self.not_implemented(message = '')
+        [501, {"Content-Type" => 'text/plain'}, [message]]
+      end
+
+
+      def self.valid_request(req)
+        service = service_with_request req
+
+        return not_found(service) if service.timespans.none?
+
+        last_modified = service.timespans.last.end.httpdate
+        
+        return not_modified(service) if req.env['HTTP_IF_MODIFIED_SINCE'] == last_modified
+    
+        ScanServiceJob.enqueue_unless_exists service.id
+        body = XMLBuilder.xml_for_service(service, req.params['x-fp'])
+        [200, {"Content-Type" => "application/xml", "Last-Modified" => last_modified}, [body]]
+      end
+
+      def self.service_with_request(req)
+        service = Service.find_or_create(host:req['host'], port:req['port'], service_type:req['service_type'])
+        service.update(last_request:Time.now)
+      end
+
+      def self.not_found(service)
         ScanServiceJob.enqueue_unless_exists service.id, priority:50
         [404, {"Content-Type" => "text/plain"}, [""]] 
       end
 
-      def self.not_modified
+      def self.not_modified(service)
+        ScanServiceJob.enqueue_unless_exists service.id
         [304, {}, []]
       end
 
