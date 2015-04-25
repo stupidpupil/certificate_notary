@@ -5,12 +5,12 @@ module CertificateNotary
     # https://github.com/danwent/Perspectives/blob/ceead359dc84fe3a1711e63b494e223917d88cba/plugin/chrome/content/xml_notary_client.js#L116-L157
     class PackedBuilder
 
-      def self.head_for_certificate(certificate)
-        [(certificate.timespans.count >> 8) & 255, certificate.timespans.count & 255, 0].pack('C*')
+      def self.head_for_certificate(timespans_count)
+        [(timespans_count >> 8) & 255, timespans_count & 255, 0].pack('C*')
       end
 
-      def self.fingerprint_for_certificate(certificate, hash='md5')
-        ([16, 3] + certificate[hash.to_sym].scan(/../).map {|h| h.hex}).pack('C*')
+      def self.fingerprint_for_certificate(hexdigest)
+        ([hexdigest.length/2, 3] + hexdigest.scan(/../).map {|h| h.hex}).pack('C*')
       end
 
       def self.timestamp_for_time(time)
@@ -23,8 +23,8 @@ module CertificateNotary
       end
 
       def self.record_for_certificate(certificate, service, hash='md5')
-        head_for_certificate(certificate) +
-        fingerprint_for_certificate(certificate, hash) +
+        head_for_certificate(certificate.timespans.count) +
+        fingerprint_for_certificate(certificate[hash.to_sym]) +
         certificate.timespans{|ds| ds.where(service:service)}.map {|ts| timestamps_for_timespan ts}.inject(:+)
       end
 
