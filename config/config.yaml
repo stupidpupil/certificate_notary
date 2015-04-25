@@ -11,6 +11,8 @@ defaults: &defaults
     limit: <%= ENV['NOTARY_PERIODIC_SCAN_LIMIT'] || 60*60*24*5 %> #for up to 5 days after the last request
     period: <%= ENV['NOTARY_PERIODIC_SCAN_PERIOD'] || 60*5 %> #Run the check-and-reobs job every 5 minutes
 
+  que_in_web_process: <%= ENV['NOTARY_QUE_IN_WEB_PROCESS'] || true %>
+
 development:
   <<: *defaults
   db: 'postgres://localhost/certificate_notary_development'

@@ -10,6 +10,6 @@ environment ENV['RACK_ENV'] || 'development'
 
 on_worker_boot do
   CertificateNotary::DB.disconnect
-  Que.mode = :async
+  Que.mode = CertificateNotary::Config.que_in_web_process ? :async : :off
 
 end
