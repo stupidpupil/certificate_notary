@@ -4,6 +4,16 @@ require 'openssl'
 module CertificateNotary
   class OpenSSLScanner
 
+    NET_EXCEPTIONS = [
+      Errno::EHOSTUNREACH, 
+      Errno::ENETUNREACH,
+      Errno::ECONNRESET,
+      Errno::ECONNABORTED,
+      Errno::ECONNREFUSED,
+      Errno::EINVAL,
+      Errno::ETIMEDOUT
+    ]
+
     def self.der_encoded_cert_for(host, port)
        
       begin
@@ -20,7 +30,7 @@ module CertificateNotary
           cert = ssl_client.peer_cert
         }
 
-      rescue Timeout::Error, SocketError, OpenSSL::SSL::SSLError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ECONNRESET => e
+      rescue Timeout::Error, SocketError, OpenSSL::SSL::SSLError, *NET_EXCEPTIONS => e
 
         puts "Error scanning #{host}:#{port} - #{e.inspect}"
         cert = nil
