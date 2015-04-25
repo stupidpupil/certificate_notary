@@ -1,5 +1,8 @@
 module CertificateNotary
   module PerspectivesAPI
+
+    # https://github.com/danwent/Perspectives-Server/blob/master/notary_http.py#L353-L386
+    # https://github.com/danwent/Perspectives/blob/ceead359dc84fe3a1711e63b494e223917d88cba/plugin/chrome/content/xml_notary_client.js#L116-L157
     class PackedBuilder
 
       def self.head_for_certificate(certificate)
