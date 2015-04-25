@@ -13,7 +13,7 @@
 ## Own server setup
 
 ```bash
-# Install Postgres 9.2+ and Ruby 2.2+
+# Install Postgres 9.2+, Ruby 2.2+ and the foreman gem
 git clone https://github.com/stupidpupil/certificate_notary.git
 cd certificate_notary
 bundle install --without testing
