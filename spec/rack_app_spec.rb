@@ -69,4 +69,11 @@ describe CertificateNotary::PerspectivesAPI::RackApp do
     end
   end
 
+  context 'when an unknown service type is given' do
+    it 'returns a 501' do
+      get '/?host=example.com&service_type=1'
+      expect(last_response.status).to be 501
+    end
+  end
+
 end
