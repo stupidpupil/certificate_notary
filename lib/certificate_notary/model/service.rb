@@ -9,7 +9,13 @@ module CertificateNotary
 
     def cooled_off?
       return true if last_observation_attempt.nil?
-      return true if (last_observation_attempt+Config.observation_cool_off) < Time.now
+      return true if (last_observation_attempt + Config.scanning.cool_off) < Time.now
+      false
+    end
+
+    def warmed_up?
+      return true if last_request.nil?
+      return true if (Time.now - last_request) < Config.periodic_scanning.limit
       false
     end
 
@@ -21,7 +27,7 @@ module CertificateNotary
 
       most_recent_obs = Timespan.where(service: self).last
 
-      if most_recent_obs.nil? or most_recent_obs.certificate != certificate or (Time.now - most_recent_obs[:end]) > Config.observation_update_limit
+      if most_recent_obs.nil? or most_recent_obs.certificate != certificate or (Time.now - most_recent_obs[:end]) > Config.timespan_update_limit
         return Timespan.create(service:self, certificate:certificate, start:Time.now, end:Time.now)
       else
         most_recent_obs.update(end:Time.now)

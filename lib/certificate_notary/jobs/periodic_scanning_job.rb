@@ -6,12 +6,12 @@ module CertificateNotary
 
       puts "Checking services for periodic scanning"
 
-      Service.where { last_request >= Time.now-Config.auto_reobs.limit and last_observation_attempt <= Time.now-Config.auto_reobs.interval}.each do |s|
-        ScanServiceJob.enqueue_unless_exists s.id
+      Service.each do |s|
+        ScanServiceJob.enqueue_unless_exists(s.id) if s.cooled_off? and s.warmed_up?
       end
 
       if DB[:que_jobs].where(:job_class => self.class.to_s).count == 1
-        PeriodicScanningJob.enqueue run_at:(Time.now + Config.auto_reobs.period)
+        PeriodicScanningJob.enqueue run_at:(Time.now + Config.periodic_scanning.period)
       end
 
     end
