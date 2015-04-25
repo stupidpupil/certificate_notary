@@ -1,6 +1,7 @@
 # Certificate Notary
-[![Code Climate](https://codeclimate.com/github/stupidpupil/certificate_notary/badges/gpa.svg)](https://codeclimate.com/github/stupidpupil/certificate_notary)
 [![Build Status](https://travis-ci.org/stupidpupil/certificate_notary.svg?branch=master)](https://travis-ci.org/stupidpupil/certificate_notary)
+[![Dependency Status](https://gemnasium.com/stupidpupil/certificate_notary.svg)](https://gemnasium.com/stupidpupil/certificate_notary)
+[![Code Climate](https://codeclimate.com/github/stupidpupil/certificate_notary/badges/gpa.svg)](https://codeclimate.com/github/stupidpupil/certificate_notary)
 
 [Perspectives](http://perspectives-project.org/)-compatible SSL/TLS Certificate Notary
 
