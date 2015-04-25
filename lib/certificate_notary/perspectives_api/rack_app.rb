@@ -6,12 +6,12 @@ module CertificateNotary
       VALID_PARAMS = ['host', 'port', 'service_type', 'x-fp']
       VALID_FP_HASHES = ['sha256', 'md5']
 
+      DEFAULTS ={ 'port' => '443', 'service_type' => '2', 'x-fp' => 'md5'}
+
       def self.call(env)
         req = Rack::Request.new(env)
         
-        req.params['port'] ||= '443'
-        req.params['service_type'] ||= '2'
-        req.params['x-fp'] ||= 'md5'
+        req.params.merge!(DEFAULTS) {|k,p,d| p}
 
         return bad_request('No host given') if req.params['host'].nil?
         return bad_request('Bad request') if (req.params.keys - VALID_PARAMS ).any?
