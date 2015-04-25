@@ -13,6 +13,7 @@ gem 'rack-server-pages'
 group 'testing' do
   gem 'rack-test'
   gem 'rspec'
+  gem 'simplecov'
 end
 
 group 'production' do
