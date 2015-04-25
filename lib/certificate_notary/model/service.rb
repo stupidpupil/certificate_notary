@@ -19,6 +19,12 @@ module CertificateNotary
       false
     end
 
+    def needs_periodic_scanning?
+      return warmed_up? if last_observation_attempt.nil?
+      return warmed_up? if (last_observation_attempt + Config.periodic_scanning.interval) < Time.now
+      false
+    end
+
     def observe_der_encoded_cert(der_encoded_cert)
 
       return if der_encoded_cert.nil?

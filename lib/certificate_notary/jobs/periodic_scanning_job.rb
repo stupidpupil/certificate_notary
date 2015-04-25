@@ -7,7 +7,7 @@ module CertificateNotary
       puts "Checking services for periodic scanning"
 
       Service.each do |s|
-        ScanServiceJob.enqueue_unless_exists(s.id) if s.cooled_off? and s.warmed_up?
+        ScanServiceJob.enqueue_unless_exists(s.id) if s.needs_periodic_scanning?
       end
 
       if DB[:que_jobs].where(:job_class => self.class.to_s).count == 1
