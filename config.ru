@@ -14,8 +14,4 @@ class NotaryApp
 
 end
 
-if CertificateNotary::DB[:que_jobs].where(:job_class => "CertificateNotary::PeriodicScanningJob").count == 0
-  CertificateNotary::PeriodicScanningJob.enqueue
-end
-
 run NotaryApp.new

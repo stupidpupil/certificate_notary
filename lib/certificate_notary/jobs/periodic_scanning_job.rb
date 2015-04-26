@@ -1,6 +1,10 @@
 module CertificateNotary
   class PeriodicScanningJob < Que::Job
 
+    def self.enqueue_unless_exists(*args)
+      DB[:que_jobs].where(job_class:self.to_s).any? or self.enqueue *args
+    end
+
     def run
       CertificateNotary::DB.disconnect
 
@@ -17,4 +21,5 @@ module CertificateNotary
     end
   end
 
+  PeriodicScanningJob.enqueue_unless_exists
 end
