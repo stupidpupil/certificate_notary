@@ -20,8 +20,8 @@ cd certificate_notary
 bundle install --without testing
 sudo -u postgres createuser mynotaryuser
 sudo -u postgres createdb -O mynotaryuser certificate_notary_production
-echo "NOTARY_PRIVATE_KEY=`rake generate_private_key`" >> .env
 echo "RACK_ENV=production" >> .env
+echo "NOTARY_PRIVATE_KEY=`foreman run rake generate_private_key`" >> .env
 foreman start web
 ```
 
