@@ -1,5 +1,6 @@
 namespace :que do
   task :work do
+    require 'certificate_notary'
 
     Que.mode          = :async
 
