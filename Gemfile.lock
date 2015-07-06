@@ -27,7 +27,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    sequel (4.23.0)
+    sequel (4.24.0)
     settingslogic (2.0.9)
     simplecov (0.10.0)
       docile (~> 1.1.0)
