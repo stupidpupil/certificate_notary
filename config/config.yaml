@@ -13,6 +13,11 @@ defaults: &defaults
 
   que_in_web_process: <%= ENV['NOTARY_QUE_IN_WEB_PROCESS'] || true %>
 
+  cleaning:
+    clean_after: <%= ENV['NOTARY_CLEANING_CLEAN_AFTER'] || 120 %>
+    delete_orphans: <%= ENV['NOTARY_CLEANING_DELETE_ORPHANS'] || true %>
+    period: <%= ENV['NOTARY_CLEANING_PERIOD'] || 6*60*60 %>
+
 development:
   <<: *defaults
   db: 'postgres://localhost/certificate_notary_development'
@@ -24,6 +29,11 @@ development:
 
   scanning:
     cool_off: 10
+
+  cleaning:
+    period: 20
+    clean_after: 120
+    delete_orphans: true
 
 testing:
   <<: *defaults

@@ -41,3 +41,4 @@ require 'certificate_notary/openssl_scanner'
 
 require 'certificate_notary/jobs/scan_service_job'
 require 'certificate_notary/jobs/periodic_scanning_job'
+require 'certificate_notary/jobs/cleaning_job'
