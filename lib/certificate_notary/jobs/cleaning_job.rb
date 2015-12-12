@@ -24,14 +24,16 @@ module CertificateNotary
       CertificateNotary::DB.disconnect
 
       puts "Deleted #{Timespan.where{|t| t.end < (Date.today - Config.cleaning.clean_after)}.delete} timespans"
+      CertificateNotary::DB << 'VACUUM (ANALYZE) timespans'
 
       if Config.cleaning.delete_orphans
         not_orphans = Timespan.distinct.order_by(nil).select_map(:certificate_id)
         puts "Deleted #{Certificate.where(Sequel.~(id:not_orphans)).delete} certificates"
+        CertificateNotary::DB << 'VACUUM (ANALYZE) certificates'
 
         not_orphans = Timespan.distinct.order_by(nil).select_map(:service_id)
         puts "Deleted #{Service.where(Sequel.~(id:not_orphans)).delete} services"
-
+        CertificateNotary::DB << 'VACUUM (ANALYZE) services'
       end
 
       if DB[:que_jobs].where(:job_class => self.class.to_s).count == 1
