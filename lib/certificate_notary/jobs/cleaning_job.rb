@@ -48,5 +48,6 @@ module CertificateNotary
     end
   end
 
+  CertificateNotary::DB << 'VACUUM que_jobs'
   CleaningJob.enqueue_unless_exists
 end
