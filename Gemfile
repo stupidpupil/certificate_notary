@@ -17,5 +17,5 @@ group 'testing' do
 end
 
 group 'production' do
-  gem 'puma'
+  gem 'puma', '>= 3.12.2'
 end
