@@ -8,10 +8,10 @@ gem 'rake'
 gem 'que'
 gem 'pg'
 
-gem 'rack-server-pages'
+gem 'rack-server-pages', '>= 0.1.0'
 
 group 'testing' do
-  gem 'rack-test'
+  gem 'rack-test', '>= 0.6.3'
   gem 'rspec'
   gem 'simplecov'
 end
