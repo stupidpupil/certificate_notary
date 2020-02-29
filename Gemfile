@@ -4,7 +4,7 @@ ruby '2.3.1'
 
 gem 'settingslogic'
 gem 'sequel'
-gem 'rake'
+gem 'rake', '>= 12.3.3'
 gem 'que'
 gem 'pg'
 
@@ -17,5 +17,5 @@ group 'testing' do
 end
 
 group 'production' do
-  gem 'puma'
+  gem 'puma', '>= 3.12.2'
 end
