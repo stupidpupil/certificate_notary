@@ -13,7 +13,7 @@ gem 'rack-server-pages'
 group 'testing' do
   gem 'rack-test'
   gem 'rspec'
-  gem 'simplecov'
+  gem 'simplecov', '>= 0.13.0'
 end
 
 group 'production' do
