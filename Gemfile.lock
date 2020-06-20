@@ -7,11 +7,11 @@ GEM
     pg (0.19.0)
     puma (3.7.0)
     que (0.12.1)
-    rack (2.0.1)
+    rack (2.2.3)
     rack-server-pages (0.1.0)
       rack
-    rack-test (0.6.3)
-      rack (>= 1.0)
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rake (12.0.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -41,8 +41,8 @@ DEPENDENCIES
   pg
   puma
   que
-  rack-server-pages
-  rack-test
+  rack-server-pages (>= 0.1.0)
+  rack-test (>= 0.6.3)
   rake
   rspec
   sequel
@@ -53,4 +53,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.0
+   1.17.3
